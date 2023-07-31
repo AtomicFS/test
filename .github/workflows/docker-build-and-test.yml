@@ -1,0 +1,20 @@
+---
+# Test built docker images by building simple projects inside them
+
+name: dagger
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - uses: actions/checkout@v3
+      - name: Install deps
+        run: pip install -r ./.dagger-ci/requirements.txt
+      - uses: actions/checkout@v3
+      - name: Run Dagger pipeline
+        run: python .dagger-ci/dagger-ci.py
